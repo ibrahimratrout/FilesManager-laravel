@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\APIController\APIControllers;
+use App\Http\Controllers\APIController\APIAuthControllers;
+use App\Http\Controllers\APIController\APIFileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/register',[APIControllers::class,'register']);
-Route::post('/login',[APIControllers::class,'login']);
+Route::post('/register',[APIAuthControllers::class,'register']);
+Route::post('/login',[APIAuthControllers::class,'login']);
+
+
+Route::post('/import-file',[APIFileController::class,'import']);
+
+Route::get('/export-file/{id}', [APIFileController::class, 'exportFile']);
+
+Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
+
+Route::get('/get-file', [APIFileController::class, 'getFile']);
+

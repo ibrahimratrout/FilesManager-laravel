@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 
-class APIControllers extends Controller
+class APIAuthControllers extends Controller
 {
 
 
@@ -40,9 +40,7 @@ class APIControllers extends Controller
     
             $token = $user->createToken('authToken');
     
-            if ($data['remember_me']) {
-                $token->expiresAt(Carbon::now()->addWeeks(1));
-            }
+         
             $plainTextToken = $token->plainTextToken;
             
     
@@ -70,6 +68,7 @@ class APIControllers extends Controller
 
 
 
+
     public function register(Request $request)
     {
         try {
@@ -77,14 +76,22 @@ class APIControllers extends Controller
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:6',
+                'manager_id'=>'required|int',
+                'type'=>'required|string',
+
             ]);
             $data = $request->json()->all();
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
+                'manager_id' => $validatedData['manager_id'],
+
             ]);
-            $user->attachRole('user');//type 
+            $typeUser= $validatedData['type'];
+
+
+            $user->attachRole($typeUser);//type 
             return response()->json([
                 'message' => 'Successfully created user!',
                 'user' => $user
