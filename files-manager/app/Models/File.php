@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class File extends Model
 {
@@ -17,6 +18,12 @@ class File extends Model
         'file_size',
         'file_type',
         'user_id',
+        'manager_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

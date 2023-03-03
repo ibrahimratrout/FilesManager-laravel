@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('file_size');
             $table->string('file_type');
             $table->foreignId('user_id')->constrained('users');
+            $table->unsignedBigInteger('manager_id');
             $table->timestamps();
         });
     }

@@ -31,3 +31,5 @@ Route::get('/export-file/{id}', [APIFileController::class, 'exportFile']);
 
 Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
 
+Route::get('/get-file', [APIFileController::class, 'getFile']);
+

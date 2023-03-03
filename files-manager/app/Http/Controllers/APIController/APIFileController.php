@@ -30,6 +30,8 @@ class APIFileController extends Controller
         $file->file_size = $fileSize;
         $file->file_type = $fileType;
         $file->user_id = $user->id;
+        $file->manager_id = $user->manager_id;
+
         $file->save();
         
         return response()->json([
@@ -97,7 +99,7 @@ public function deleteFile(Request $request)
         return response()->json(['error' => 'Invalid token.'], 401);
     }
     try {
-            $file = File::where('id', $request->id)->where('user_id', $user->id)->firstOrFail();
+            $file = File::where('id', $request->id)->firstOrFail();
             if ($file) {
             $filePath = storage_path('app/' . $file->file_path);
             if (file_exists($filePath)) {
@@ -125,4 +127,38 @@ public function deleteFile(Request $request)
 
     }
 }
+
+
+
+public function getFile(Request $request)
+{
+    $user = $request->user('sanctum');
+    if (!$user) {
+        return response()->json(['error' => 'Invalid token.'], 401);
+    }
+    try {
+        $files = File::where('manager_id', $user->manager_id)->select('id', 'file_name','label', 'file_size', 'file_type')->get();
+        return response()->json([
+        'success' => true,
+        'data' => $files,], 200);
+     } catch (Exception $e) {
+        $statusCode = 500;
+        if ($e->getCode() >= 400 && $e->getCode() < 500) {
+            $statusCode = $e->getCode();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ],  $statusCode );
+        }  
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ], 404);
+
+    }
+}
+
+
+
+
 }
