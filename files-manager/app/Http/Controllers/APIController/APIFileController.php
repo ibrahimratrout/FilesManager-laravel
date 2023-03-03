@@ -11,7 +11,6 @@ class APIFileController extends Controller
   public function import(Request $request)
     {
         $user = $request->user('sanctum');
-       
         if (!$user) {
             return response()->json(['error' => 'Invalid token.'], 401);
         }
@@ -20,7 +19,7 @@ class APIFileController extends Controller
         $label = $request->input('label');
         $file = $request->file('file');
         $fileName = $request->input('name');
-        $path = $file->store('imported-files');  ////save the file to storage
+        $path = $file->store('imported-files');  /////save the file to storage
         $fileSize = $file->getSize();
         $fileType = $file->getClientOriginalExtension();
         
@@ -55,7 +54,7 @@ public function exportFile(Request $request)
         return response()->json(['error' => 'Invalid token.'], 401);
     }
     try {
-        $file = File::where('id', $request->id)->where('user_id', $user->id)->firstOrFail();
+        $file = File::where('id', $request->id)->firstOrFail();
         if ($file) {
             $filePath = storage_path('app/'.$file->file_path);
             $fileLabel= $file->label;
