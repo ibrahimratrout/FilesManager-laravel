@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 
-class APIControllers extends Controller
+class APIAuthControllers extends Controller
 {
 
 
