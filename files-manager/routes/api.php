@@ -33,3 +33,5 @@ Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
 
 Route::get('/get-file', [APIFileController::class, 'getFile']);
 
+Route::put('/update-file/{id}', [APIFileController::class, 'updateFile']);
+

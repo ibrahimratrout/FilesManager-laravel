@@ -56,7 +56,7 @@ public function exportFile(Request $request)
         return response()->json(['error' => 'Invalid token.'], 401);
     }
     try {
-        $file = File::where('id', $request->id)->firstOrFail();
+        $file = File::where('id', $request->id)->where('manager_id', $user->manager_id)->firstOrFail();
         if ($file) {
             $filePath = storage_path('app/'.$file->file_path);
             $fileLabel= $file->label;
@@ -99,8 +99,8 @@ public function deleteFile(Request $request)
         return response()->json(['error' => 'Invalid token.'], 401);
     }
     try {
-            $file = File::where('id', $request->id)->firstOrFail();
-            if ($file) {
+        $file = File::where('id', $request->id)->where('manager_id', $user->manager_id)->firstOrFail();
+        if ($file) {
             $filePath = storage_path('app/' . $file->file_path);
             if (file_exists($filePath)) {
                 unlink($filePath); ////to delete the file from the path
@@ -159,6 +159,38 @@ public function getFile(Request $request)
 }
 
 
+public function updateFile(Request $request)
+{
+    $user = $request->user('sanctum');
+    if (!$user) {
+        return response()->json(['error' => 'Invalid token.'], 401);
+    }
+    try {
+        $file = File::where('id', $request->id)->where('manager_id', $user->manager_id)->firstOrFail();
+        if ($file) {
+            $file->label = $request->input('label'); 
+            $file->file_name = $request->input('name'); 
+            $file->save(); 
+            return response()->json([
+                'success' => true,
+                'message' => 'File updated successfully',
+            ], 200);
+        }
+    } catch (Exception $e) {
+        $statusCode = 500;
+        if ($e->getCode() >= 400 && $e->getCode() < 500) {
+            $statusCode = $e->getCode();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ],  $statusCode );
+        }
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ], 404);
+    }
+}
 
 
 }
