@@ -12,6 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'api/*', // exclude all routes that start with 'api/'
+        'stripe/*', // exclude all routes that start with 'stripe/'
+        'http://example.com/foo', // exclude a specific URL
     ];
+    
 }
