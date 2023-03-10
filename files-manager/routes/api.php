@@ -22,8 +22,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/register',[APIAuthControllers::class,'register']);
 Route::post('/login',[APIAuthControllers::class,'login']);
+
+
+Route::post('/register',[APIAuthControllers::class,'registerManager']);
+
+Route::post('/register-employee',[APIAuthControllers::class,'registerEmployee']);
+
+
+
 
 
 Route::post('/import-file',[APIFileController::class,'import']);

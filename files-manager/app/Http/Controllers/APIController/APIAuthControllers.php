@@ -24,8 +24,6 @@ class APIAuthControllers extends Controller
             $validatedData = $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|string|min:6',
-              
-
             ]);
 
             $data = $request->json()->all();
@@ -37,12 +35,10 @@ class APIAuthControllers extends Controller
             }
     
             $user = Auth::user();
-    
+
             $token = $user->createToken('authToken');
-    
          
             $plainTextToken = $token->plainTextToken;
-            
     
             return response()->json([
                 'message' => 'Successfully logged in',
@@ -69,26 +65,29 @@ class APIAuthControllers extends Controller
 
 
 
-    public function register(Request $request)
+    public function registerManager(Request $request)
     {
+
+        
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:6',
-                'manager_id'=>'required|int',
-                'type'=>'required|string',
 
             ]);
-            $data = $request->json()->all();
+            $randomNumber = random_int(100000, 999999);
+            $managerId = $validatedData['email'] . $randomNumber;
+            $managerIdString = strval($managerId);
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'manager_id' => $validatedData['manager_id'],
+                'manager_id' =>$managerIdString ,
 
             ]);
-            $typeUser= $validatedData['type'];
+           // $typeUser= $validatedData['type'];
+            $typeUser= 'admin';
 
 
             $user->attachRole($typeUser);//type 
@@ -104,4 +103,59 @@ class APIAuthControllers extends Controller
         }
 
     }
+
+
+    public function registerEmployee(Request $request)
+    {
+
+        $manager = $request->user('sanctum');
+        if (!$manager) {
+            return response()->json(['error' => 'Invalid token.'], 401);
+        }
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|string|min:6',
+                //'type'=>'required|string',
+
+            ]);
+           
+            $user = User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+                'manager_id' => $manager->manager_id,
+
+            ]);
+            //$typeUser= $validatedData['user'];
+
+            $typeUser='user';
+
+            $user->attachRole($typeUser);//type 
+            return response()->json([
+                'message' => 'Successfully created user!',
+                'user' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error Occurred while creating user',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
