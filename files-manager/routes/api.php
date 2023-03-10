@@ -5,50 +5,37 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController\APIAuthControllers;
 use App\Http\Controllers\APIController\APIFileController;
 use App\Http\Controllers\APIController\APIReportController;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+use App\Http\Middleware\OwnerMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\StaffMiddleware;
 
 
 Route::post('/login',[APIAuthControllers::class,'login']);
 
-
 Route::post('/register',[APIAuthControllers::class,'registerManager']);
 
-Route::post('/register-employee',[APIAuthControllers::class,'registerEmployee']);
+
+Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
+
+    Route::post('/register-employee', [APIAuthControllers::class, 'registerEmployee']);
+    Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
+    Route::get('/get-file', [APIFileController::class, 'getFile']);
+    Route::post('/import-file',[APIFileController::class,'import']);
+    Route::put('/update-file/{id}', [APIFileController::class, 'updateFile']);
+    Route::get('/report-count-file', [APIReportController::class, 'countFile']);
+    Route::get('/report-count-user', [APIReportController::class, 'countUser']);
+    Route::get('/report-file', [APIReportController::class, 'reportFileUser']);
+    Route::get('/report-user', [APIReportController::class, 'reportUser']);
+    
+});
 
 
+Route::middleware(['auth:sanctum', StaffMiddleware::class])->group(function () {
 
+    Route::post('/import-file',[APIFileController::class,'import']);
+    Route::get('/export-file/{id}', [APIFileController::class, 'exportFile']);
+    Route::get('/get-file', [APIFileController::class, 'getFile']);
 
+});
 
-Route::post('/import-file',[APIFileController::class,'import']);
-
-Route::get('/export-file/{id}', [APIFileController::class, 'exportFile']);
-
-Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
-
-Route::get('/get-file', [APIFileController::class, 'getFile']);
-
-Route::put('/update-file/{id}', [APIFileController::class, 'updateFile']);
-
-
-
-
-Route::get('/report-count-file', [APIReportController::class, 'countFile']);
-
-Route::get('/report-count-user', [APIReportController::class, 'countUser']);
-
-Route::get('/report-file', [APIReportController::class, 'reportUser']);
 

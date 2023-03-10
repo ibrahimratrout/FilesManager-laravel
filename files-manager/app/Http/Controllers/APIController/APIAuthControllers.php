@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Role;
 
 
 class APIAuthControllers extends Controller
@@ -130,7 +131,7 @@ class APIAuthControllers extends Controller
             ]);
             //$typeUser= $validatedData['user'];
 
-            $typeUser='user';
+            $typeUser='staff';
 
             $user->attachRole($typeUser);//type 
             return response()->json([
