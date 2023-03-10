@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Role;
 
 class AdminMiddleware
 {
@@ -21,6 +20,8 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/');    
+        return response()->json([
+            'success' => 'true',
+        ], 200);
     }
 }
