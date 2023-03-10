@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController\APIAuthControllers;
 use App\Http\Controllers\APIController\APIFileController;
+use App\Http\Controllers\APIController\APIReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,13 @@ Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
 Route::get('/get-file', [APIFileController::class, 'getFile']);
 
 Route::put('/update-file/{id}', [APIFileController::class, 'updateFile']);
+
+
+
+
+Route::get('/report-count-file', [APIReportController::class, 'countFile']);
+
+Route::get('/report-count-user', [APIReportController::class, 'countUser']);
+
+Route::get('/report-file', [APIReportController::class, 'reportUser']);
 
