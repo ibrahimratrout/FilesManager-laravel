@@ -15,9 +15,8 @@ class OwnerMiddleware
         if (Auth::check() && Auth::user()->hasRole('owner')) {
             return $next($request);
         }
-
-        return response()->json([
-            'success' => 'true',
-        ], 200);
+        else{
+            return redirect('/');    
+        }
     }
 }

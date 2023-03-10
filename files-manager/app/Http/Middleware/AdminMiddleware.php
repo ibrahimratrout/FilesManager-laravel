@@ -20,8 +20,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return response()->json([
-            'success' => 'true',
-        ], 200);
+        return redirect('/');    
     }
 }

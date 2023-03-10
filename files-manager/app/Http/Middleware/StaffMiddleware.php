@@ -20,9 +20,10 @@ class StaffMiddleware
         if (Auth::check() && Auth::user()->hasRole('staff')) {
             return $next($request);
         }
+        else
+        {
+            return redirect('/');    
 
-        return response()->json([
-            'success' => 'true',
-        ], 200);
+    }
      }
 }
