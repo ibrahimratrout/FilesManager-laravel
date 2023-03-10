@@ -19,9 +19,6 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
 
     Route::post('/register-employee', [APIAuthControllers::class, 'registerEmployee']);
     Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
-    Route::get('/get-file', [APIFileController::class, 'getFile']);
-    Route::post('/import-file',[APIFileController::class,'import']);
-    Route::put('/update-file/{id}', [APIFileController::class, 'updateFile']);
     Route::get('/report-count-file', [APIReportController::class, 'countFile']);
     Route::get('/report-count-user', [APIReportController::class, 'countUser']);
     Route::get('/report-file', [APIReportController::class, 'reportFileUser']);
@@ -29,12 +26,15 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
     
 });
 
+Route::get('/get-file', [APIFileController::class, 'getFile']);
+Route::post('/import-file',[APIFileController::class,'import']);
+Route::put('/update-file/{id}', [APIFileController::class, 'updateFile']);
+Route::get('/export-file/{id}', [APIFileController::class, 'exportFile']);
+
 
 Route::middleware(['auth:sanctum', StaffMiddleware::class])->group(function () {
 
-    Route::post('/import-file',[APIFileController::class,'import']);
-    Route::get('/export-file/{id}', [APIFileController::class, 'exportFile']);
-    Route::get('/get-file', [APIFileController::class, 'getFile']);
+
 
 });
 
