@@ -80,7 +80,7 @@ class APIReportController extends Controller
             $manager = User::findOrFail($user->id);
             $files = File::with(['user' => function($query) {
                 $query->select('id', 'name');
-            }])->where('manager_id', $manager->manager_id)->get(['label', 'file_size','file_type', 'user_id', 'created_at']);
+            }])->where('manager_id', $manager->manager_id)->get(['id','label','file_name', 'file_size','file_type', 'user_id', 'created_at']);
     
             return response()->json([
                 'success' => true,

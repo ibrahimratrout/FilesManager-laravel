@@ -18,7 +18,7 @@ Route::post('/register',[APIAuthControllers::class,'registerManager']);
 Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
 
     Route::post('/register-employee', [APIAuthControllers::class, 'registerEmployee']);
-    Route::post('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
+    Route::delete('/delete-file/{id}', [APIFileController::class, 'deleteFile']);
     Route::get('/report-count-file', [APIReportController::class, 'countFile']);
     Route::get('/report-count-user', [APIReportController::class, 'countUser']);
     Route::get('/report-file', [APIReportController::class, 'reportFileUser']);

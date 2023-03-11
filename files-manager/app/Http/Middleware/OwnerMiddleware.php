@@ -16,7 +16,9 @@ class OwnerMiddleware
             return $next($request);
         }
         else{
-            return redirect('/');    
+            return response()->json([
+                'success' => false,
+            ], 403);
         }
     }
 }

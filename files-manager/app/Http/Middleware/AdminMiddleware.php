@@ -19,7 +19,11 @@ class AdminMiddleware
         if (Auth::check() && Auth::user()->hasRole('admin')) {
             return $next($request);
         }
+        else{
+            return response()->json([
+                'success' => false,
+            ], 403);
+        }
 
-        return redirect('/');    
     }
 }

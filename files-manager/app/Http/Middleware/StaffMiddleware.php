@@ -22,8 +22,9 @@ class StaffMiddleware
         }
         else
         {
-            return redirect('/');    
-
-    }
+            return response()->json([
+                'success' => false,
+            ], 403);
+        }
      }
 }
