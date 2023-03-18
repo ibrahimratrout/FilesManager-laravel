@@ -3,6 +3,8 @@ Using react and php-laravel to make project for managing data in the files.
 
 Running project by using this commands
 
+composer update
+
 php artisan migrate
 
 php artisan db:seed
