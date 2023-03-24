@@ -17,16 +17,15 @@ class APIAuthControllers extends Controller
 {
 
 
+    
     public function login(Request $request)
     {
-      
-
         try {
             $validatedData = $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|string|min:6',
             ]);
-
+    
             $data = $request->json()->all();
     
             if (!Auth::attempt($validatedData)) {
@@ -36,17 +35,25 @@ class APIAuthControllers extends Controller
             }
     
             $user = Auth::user();
-
+    
             $token = $user->createToken('authToken');
-         
+    
             $plainTextToken = $token->plainTextToken;
+            $isStaff = $user->hasRole('staff');
+            $isAdmin = $user->hasRole('admin');
+            $type="";
+
+            if($isStaff)
+               $type="staff";
+            else if($isAdmin)
+              $type="admin";
     
             return response()->json([
                 'message' => 'Successfully logged in',
                 'user' => $user,
-                'email'=>$user->email,
-                'token'=>$plainTextToken
-    
+                'email' => $user->email,
+                'token' => $plainTextToken,
+                'type' =>  $type
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
@@ -87,7 +94,7 @@ class APIAuthControllers extends Controller
                 'manager_id' =>$managerIdString ,
 
             ]);
-           // $typeUser= $validatedData['type'];
+           
             $typeUser= 'admin';
 
 
@@ -118,7 +125,7 @@ class APIAuthControllers extends Controller
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:6',
-                //'type'=>'required|string',
+            
 
             ]);
            
@@ -129,11 +136,12 @@ class APIAuthControllers extends Controller
                 'manager_id' => $manager->manager_id,
 
             ]);
-            //$typeUser= $validatedData['user'];
+           
 
             $typeUser='staff';
 
-            $user->attachRole($typeUser);//type 
+            $user->attachRole($typeUser);
+
             return response()->json([
                 'message' => 'Successfully created user!',
                 'user' => $user
@@ -144,6 +152,12 @@ class APIAuthControllers extends Controller
                 'error' => $e->getMessage()
             ], 404);
         }
+
+
+
+
+
+
 
     }
 
