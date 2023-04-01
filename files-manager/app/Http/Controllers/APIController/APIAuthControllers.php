@@ -153,16 +153,21 @@ class APIAuthControllers extends Controller
             ], 404);
         }
 
-
-
-
-
-
-
     }
 
 
+    public function logout(Request $request)
+    {
+        $user = $request->user('sanctum');
+       
+        if (!$user) {
+            return response()->json(['error' => 'Invalid token.'], 401);
+        }   
+    
+        $user->tokens()->delete();
 
+        return response()->json(['message' => 'Logged out'], 200);
+    }
 
 
 

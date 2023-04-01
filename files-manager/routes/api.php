@@ -13,6 +13,7 @@ use App\Http\Middleware\StaffMiddleware;
 Route::post('/login',[APIAuthControllers::class,'login']);
 
 Route::post('/register',[APIAuthControllers::class,'registerManager']);
+Route::post('/logout',[APIAuthControllers::class,'logout']);
 
 
 Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
