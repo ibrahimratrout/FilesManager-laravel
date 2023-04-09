@@ -23,7 +23,7 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
     Route::delete('/admin/delete-user/{id}', [APIReportController::class, 'deleteUser']);
     Route::get('/report-count-file', [APIReportController::class, 'countFile']);
     Route::get('/report-count-user', [APIReportController::class, 'countUser']);
-    Route::get('/report-file', [APIReportController::class, 'reportFileUser']);
+    Route::get('/admin/report-file', [APIReportController::class, 'reportFileUser']);
     Route::get('/report-user', [APIReportController::class, 'reportUser']);
     Route::get('/admin/get-file', [APIFileController::class, 'getFile']);
     Route::post('/admin/import-file',[APIFileController::class,'import']);
@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
 });
 
 Route::middleware(['auth:sanctum', StaffMiddleware::class])->group(function () {
+    Route::get('/report-file', [APIReportController::class, 'reportFileUser']);
 
     Route::get('/get-file', [APIFileController::class, 'getFile']);
     Route::post('/import-file',[APIFileController::class,'import']);
