@@ -37,7 +37,6 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->group(function () {
 
 Route::middleware(['auth:sanctum', StaffMiddleware::class])->group(function () {
     Route::get('/report-file', [APIReportController::class, 'reportFileUser']);
-
     Route::get('/get-file', [APIFileController::class, 'getFile']);
     Route::post('/import-file',[APIFileController::class,'import']);
     Route::put('/update-file/{id}', [APIFileController::class, 'updateFile']);

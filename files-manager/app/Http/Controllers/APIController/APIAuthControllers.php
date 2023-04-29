@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Role;
+use Log;
 
 
 class APIAuthControllers extends Controller
@@ -56,11 +57,13 @@ class APIAuthControllers extends Controller
                 'type' =>  $type
             ], 200);
         } catch (ValidationException $e) {
+            Log::error("Validation error login ".$e->getMessage());
             return response()->json([
                 'message' => 'Validation Error',
                 'errors' => $e->validator->errors()
             ], 422);
         } catch (\Exception $e) {
+            Log::error("error occurred while login".$e->getMessage());
             return response()->json([
                 'message' => 'Error Occurred while login',
                 'error' => $e->getMessage()
@@ -104,8 +107,9 @@ class APIAuthControllers extends Controller
                 'user' => $user
             ], 200);
         } catch (\Exception $e) {
+            Log::error("error occurred while creating manager ".$e->getMessage());
             return response()->json([
-                'message' => 'Error Occurred while creating user',
+                'message' => 'Error Occurred while creating manager',
                 'error' => $e->getMessage()
             ], 404);
         }
@@ -147,6 +151,7 @@ class APIAuthControllers extends Controller
                 'user' => $user
             ], 200);
         } catch (\Exception $e) {
+            Log::error("error occurred while creating employee ".$e->getMessage());
             return response()->json([
                 'message' => 'Error Occurred while creating user',
                 'error' => $e->getMessage()

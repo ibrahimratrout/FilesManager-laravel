@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\File;
 use App\Models\User;
-
+use Log;
 class APIReportController extends Controller
 {
  
@@ -25,6 +25,7 @@ class APIReportController extends Controller
                     'file_count'=>$fileCount
                 ], 200);
         } catch (Exception $e) {
+            Log::error("error count file ".$e->getMessage());
             $statusCode = 500;
             if ($e->getCode() >= 400 && $e->getCode() < 500) {
                 $statusCode = $e->getCode();
@@ -54,6 +55,7 @@ class APIReportController extends Controller
                     'user_count'=>$userCount-1
                 ], 200);
         } catch (Exception $e) {
+            Log::error("error count user ".$e->getMessage());
             $statusCode = 500;
             if ($e->getCode() >= 400 && $e->getCode() < 500) {
                 $statusCode = $e->getCode();
@@ -88,6 +90,8 @@ class APIReportController extends Controller
                 'files' => $files
             ], 200);
         } catch (Exception $e) {
+            Log::error("error report file user ".$e->getMessage());
+
             $statusCode = 500;
             if ($e->getCode() >= 400 && $e->getCode() < 500) {
                 $statusCode = $e->getCode();
@@ -119,6 +123,7 @@ class APIReportController extends Controller
                 'users' => $allUser
             ], 200);
         } catch (Exception $e) {
+            Log::error("error report user ".$e->getMessage());
             $statusCode = 500;
             if ($e->getCode() >= 400 && $e->getCode() < 500) {
                 $statusCode = $e->getCode();
@@ -133,7 +138,7 @@ class APIReportController extends Controller
             ], 404);
         }
     }
-    public function deleteUser(Request $request)
+    public function deleteUser(Request $request,$id)
     {
         $user = $request->user('sanctum');
         if (!$user) {
@@ -141,13 +146,16 @@ class APIReportController extends Controller
         }
         try {
            
-            $deleteUser = User::where('manager_id', $user->manager_id)->where('id', $request->id)->first();
+            $deleteUser = User::where('manager_id', $user->manager_id)->where('id', $id)->first();
+            Log::warning("delete employee id :  $deleteUser");
+
             $deleteUser->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'successfully',
             ], 200);
         } catch (Exception $e) {
+            Log::error("error delete employee ".$e->getMessage());
             $statusCode = 500;
             if ($e->getCode() >= 400 && $e->getCode() < 500) {
                 $statusCode = $e->getCode();

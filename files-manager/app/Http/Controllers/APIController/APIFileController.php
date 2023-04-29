@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\File;
+use Log;
 class APIFileController extends Controller
 {
   public function import(Request $request)
@@ -22,7 +23,7 @@ class APIFileController extends Controller
         $path = $file->store('imported-files');  /////save the file to storage
         $fileSize = $file->getSize();
         $fileType = $file->getClientOriginalExtension();
-        
+        Log::warning("import file size $fileSize and the type $fileType");
         $file = new File;
         $file->label = $label;
         $file->file_name = $fileName;
@@ -39,6 +40,7 @@ class APIFileController extends Controller
             'message' => 'File imported successfully.',
         ], 200);
         } catch (\Exception $e) {
+            Log::error("error import file ".$e->getMessage());
             $statusCode = 500;
             if ($e->getCode() >= 400 && $e->getCode() < 500) {
                 $statusCode = $e->getCode();
@@ -76,6 +78,8 @@ public function exportFile(Request $request)
             }
         } 
     } catch (Exception $e) {
+        Log::error("error export file ".$e->getMessage());
+
         $statusCode = 500;
         if ($e->getCode() >= 400 && $e->getCode() < 500) {
             $statusCode = $e->getCode();
@@ -105,13 +109,17 @@ public function deleteFile(Request $request)
             if (file_exists($filePath)) {
                 unlink($filePath); ////to delete the file from the path
             }
+            Log::warning("delete delete file   :  $file");
+
             $file->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'File deleted successfully',
             ], 200);
+            Log::warning("delete file");
         } 
     } catch (Exception $e) {
+        Log::error("error delete file ".$e->getMessage());
         $statusCode = 500;
         if ($e->getCode() >= 400 && $e->getCode() < 500) {
             $statusCode = $e->getCode();
@@ -142,6 +150,7 @@ public function getFile(Request $request)
         'success' => true,
         'data' => $files,], 200);
      } catch (Exception $e) {
+        Log::error("error get file ".$e->getMessage());
         $statusCode = 500;
         if ($e->getCode() >= 400 && $e->getCode() < 500) {
             $statusCode = $e->getCode();
@@ -177,6 +186,7 @@ public function updateFile(Request $request)
             ], 200);
         }
     } catch (Exception $e) {
+        Log::error("error update file ".$e->getMessage());
         $statusCode = 500;
         if ($e->getCode() >= 400 && $e->getCode() < 500) {
             $statusCode = $e->getCode();
