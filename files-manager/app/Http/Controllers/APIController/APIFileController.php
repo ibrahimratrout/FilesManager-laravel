@@ -23,7 +23,7 @@ class APIFileController extends Controller
         $path = $file->store('imported-files');  /////save the file to storage
         $fileSize = $file->getSize();
         $fileType = $file->getClientOriginalExtension();
-        Log::warning("import file size $fileSize and the type $fileType");
+        Log::warning("import file size $fileSize kb and the type $fileType");
         $file = new File;
         $file->label = $label;
         $file->file_name = $fileName;
