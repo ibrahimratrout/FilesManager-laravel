@@ -14,7 +14,7 @@ This file includes a Software Specification Document (SRS) for Project File Mana
 ## Members:
 
 - Abdulsalam Sawalha 
-
+- Ibrahim Ratrout
 
 ## Running project by using this commands
 
