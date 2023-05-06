@@ -18,13 +18,13 @@ This file includes a Software Specification Document (SRS) for Project File Mana
 
 ## Running project by using this commands
 
-composer update
+- composer update
 
-php artisan migrate
+- php artisan migrate
 
-php artisan db:seed
+- php artisan db:seed
 
-php artisan serve
+- php artisan serve
 
 in database name table roles   you need to  changes this row to 
 
