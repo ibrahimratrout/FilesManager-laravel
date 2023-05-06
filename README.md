@@ -1,7 +1,22 @@
-# FilesManager-laravel
-Using react and php-laravel to make project for managing data in the files.
+# File Manager - backend
 
-Running project by using this commands
+## Course:
+Internship-3@CAP
+
+## Brief:
+This file includes a Software Specification Document (SRS) for Project File Manager
+
+
+
+## Google Docs Link:
+[View srs document without Download](https://docs.google.com/document/d/1n2aRgWrWOv6tPpDCq7bS5ZUAXb4lp4q_ziQPhipxEOg/edit?usp=sharing)
+
+## Members:
+
+- Abdulsalam Sawalha 
+
+
+## Running project by using this commands
 
 composer update
 
